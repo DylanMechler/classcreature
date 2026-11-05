@@ -15,6 +15,7 @@ for (let i = 0; i < items.length; i++) {
     const purchaseAdjustmentContainer = document.createElement("div");
     const itemPurchaseAmountIncrease = document.createElement("button");
     const itemPurchaseAmountDecrease = document.createElement("button");
+    const itemListingContainer = document.getElementById("itemListing");
 
     itemImageDisplay.src = items[i][3];
 
@@ -26,4 +27,6 @@ for (let i = 0; i < items.length; i++) {
 
     itemContainer.appendChild(itemImageDisplay, itemPurchaseAmountDisplay, purchaseAdjustmentContainer);
     itemContainer.title = items[i][0];
+
+    itemListingContainer.appendChild(itemContainer);
 }

@@ -1,4 +1,4 @@
-const items = [["cheese", 5, 0, "/public/img/Cheese.png"], ["toy", 5, 0, "/public/img/Toy.png"], ["candy", 5, 0, "/public/img/Candy.png"]]
+const items = [["cheese", 5, 0, "/img/Cheese.png"], ["toy", 5, 0, "/img/Toy.png"], ["candy", 5, 0, "/img/Candy.png"]]
 
 class item {
     constructor(type, cost, purchaseAmount){

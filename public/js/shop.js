@@ -33,7 +33,9 @@ for (let i = 0; i < items.length; i++) {
     itemPurchaseAmountDecrease.innerText = "-";
     itemPurchaseAmountIncrease.id = items[i][0] + "PurchaseAmountIncrease";
     itemPurchaseAmountDecrease.id = items[i][0] + "PurchaseAmountDecrease";
-    itemPurchaseAmountIncrease.addEventListener("click", increasePurchaseAmount(itemPurchaseAmountIncrease.id));
+    itemPurchaseAmountIncrease.addEventListener("click", (event) => {
+        increasePurchaseAmount(event.target.id);
+    });
     purchaseAdjustmentContainer.appendChild(itemPurchaseAmountIncrease);
     purchaseAdjustmentContainer.appendChild(itemPurchaseAmountDecrease);
 
@@ -51,11 +53,14 @@ for (let i = 0; i < items.length; i++) {
 }
 
 function increasePurchaseAmount(buttonId) {
+    console.log("Increase button clicked: " + buttonId);
     for (let i = 0; i < constructedItems.length; i++) {
         if (buttonId === constructedItems[i].type + "PurchaseAmountIncrease") {
             constructedItems[i].purchaseAmount++;
             totalPurchaseCost += constructedItems[i].cost;
             document.getElementById(constructedItems[i].type + "PurchaseAmountDisplay").innerText = constructedItems[i].purchaseAmount;
+            document.getElementById("costDisplay").innerText = totalPurchaseCost;
+            break;
         }
     }
 }

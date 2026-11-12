@@ -1,6 +1,7 @@
 const items = [["cheese", 5, 0, "/img/Cheese.png", "Restores Hunger"], ["toy", 5, 0, "/img/Toy.png", "Restores Entertainment"], ["candy", 5, 0, "/img/Candy.png", "Restores Happiness"]]
 const constructedItems = [];
 var totalPurchaseCost = 0;
+var fakeDigipogs = 100;
 
 class item {
     constructor(type, cost, purchaseAmount){
@@ -36,6 +37,9 @@ for (let i = 0; i < items.length; i++) {
     itemPurchaseAmountIncrease.addEventListener("click", (event) => {
         increasePurchaseAmount(event.target.id);
     });
+    itemPurchaseAmountDecrease.addEventListener("click", (event) => {
+        decreasePurchaseAmount(event.target.id);
+    });
     purchaseAdjustmentContainer.appendChild(itemPurchaseAmountIncrease);
     purchaseAdjustmentContainer.appendChild(itemPurchaseAmountDecrease);
 
@@ -52,6 +56,16 @@ for (let i = 0; i < items.length; i++) {
     constructedItems.push(new item(items[i][0], items[i][1], items[i][2]));
 }
 
+const clearButton = document.getElementById("clearButton");
+clearButton.addEventListener("click", (event) => {
+    clearPurchases();
+});
+
+const purchaseButton = document.getElementById("purchaseButton");
+purchaseButton.addEventListener("click", (event) => {
+    acceptPurchase();
+});
+
 function increasePurchaseAmount(buttonId) {
     console.log("Increase button clicked: " + buttonId);
     for (let i = 0; i < constructedItems.length; i++) {
@@ -59,8 +73,45 @@ function increasePurchaseAmount(buttonId) {
             constructedItems[i].purchaseAmount++;
             totalPurchaseCost += constructedItems[i].cost;
             document.getElementById(constructedItems[i].type + "PurchaseAmountDisplay").innerText = constructedItems[i].purchaseAmount;
-            document.getElementById("costDisplay").innerText = totalPurchaseCost;
+            document.getElementById("costDisplay").innerText = "Cost: " + totalPurchaseCost + " digipogs";
             break;
+        }
+    }
+}
+
+function decreasePurchaseAmount(buttonId) {
+    console.log("Decrease button clicked: " + buttonId);
+    for (let i = 0; i < constructedItems.length; i++) {
+        if (buttonId === constructedItems[i].type + "PurchaseAmountDecrease") {
+            if (constructedItems[i].purchaseAmount > 0) {
+                constructedItems[i].purchaseAmount--;
+                totalPurchaseCost -= constructedItems[i].cost;
+                document.getElementById(constructedItems[i].type + "PurchaseAmountDisplay").innerText = constructedItems[i].purchaseAmount;
+                document.getElementById("costDisplay").innerText = "Cost: " + totalPurchaseCost + " digipogs";
+                break;
+            }
+        }
+    }
+}
+
+function clearPurchases() {
+    totalPurchaseCost = 0;
+    document.getElementById("costDisplay").innerText = "Cost: " + totalPurchaseCost + " digipogs";
+    for (let i = 0; i < constructedItems.length; i++) {
+        constructedItems[i].purchaseAmount = 0;
+        document.getElementById(constructedItems[i].type + "PurchaseAmountDisplay").innerText = constructedItems[i].purchaseAmount;
+    }
+}
+
+function acceptPurchase() {
+    purchaseApproved = window.confirm("Are you sure you want to purchase these items for " + totalPurchaseCost + " digipogs?");
+    if (purchaseApproved) {
+        if (totalPurchaseCost <= fakeDigipogs) {
+            fakeDigipogs -= totalPurchaseCost;
+            console.log("Purchase successful! Remaining digipogs: " + fakeDigipogs);
+            clearPurchases();
+        } else {
+            window.alert("You do not have enough digipogs to complete this purchase.");
         }
     }
 }

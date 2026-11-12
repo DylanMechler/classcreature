@@ -115,3 +115,7 @@ function acceptPurchase() {
         }
     }
 }
+
+function updatePlayerInventory() {
+    
+}

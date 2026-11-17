@@ -124,8 +124,9 @@ export async function up(knex) {
         .inTable('users')
         .onDelete('CASCADE');
 
-    table.string('name', 64).notNullable();
-    table.string('itemtype', 36).nullable();
+    table.integer('cheese').notNullable();
+    table.integer('toys').notNullable();
+    table.integer('candy').notNullable();
 
     table.index(['user_id']);
 });

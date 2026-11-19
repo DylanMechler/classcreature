@@ -2,6 +2,9 @@ const items = [["cheese", 5, 0, "/img/Cheese.png", "Restores Hunger"], ["toy", 5
 const constructedItems = [];
 var totalPurchaseCost = 0;
 var fakeDigipogs = 1000;
+var cheeseCount = 0;
+var toyCount = 0;
+var candyCount = 0;
 
 class item {
     constructor(type, cost, purchaseAmount){
@@ -56,6 +59,7 @@ for (let i = 0; i < items.length; i++) {
     constructedItems.push(new item(items[i][0], items[i][1], items[i][2]));
 }
 
+// Add event listeners for clear and purchase buttons
 const clearButton = document.getElementById("clearButton");
 clearButton.addEventListener("click", (event) => {
     clearPurchases();
@@ -66,6 +70,7 @@ purchaseButton.addEventListener("click", (event) => {
     acceptPurchase();
 });
 
+// Increase the purchase amount for a specific item and update the total cost
 function increasePurchaseAmount(buttonId) {
     console.log("Increase button clicked: " + buttonId);
     for (let i = 0; i < constructedItems.length; i++) {
@@ -79,6 +84,7 @@ function increasePurchaseAmount(buttonId) {
     }
 }
 
+// Decrease the purchase amount for a specific item and update the total cost
 function decreasePurchaseAmount(buttonId) {
     console.log("Decrease button clicked: " + buttonId);
     for (let i = 0; i < constructedItems.length; i++) {
@@ -94,6 +100,7 @@ function decreasePurchaseAmount(buttonId) {
     }
 }
 
+// Clear all purchase amounts and reset total cost
 function clearPurchases() {
     totalPurchaseCost = 0;
     document.getElementById("costDisplay").innerText = "Cost: " + totalPurchaseCost + " digipogs";
@@ -103,6 +110,7 @@ function clearPurchases() {
     }
 }
 
+// Confirm purchase and update player inventory if approved
 function acceptPurchase() {
     purchaseApproved = window.confirm("Are you sure you want to purchase these items for " + totalPurchaseCost + " digipogs?");
     if (purchaseApproved) {
@@ -117,22 +125,10 @@ function acceptPurchase() {
     }
 }
 
+// Update player inventory based on purchased items
 function updatePlayerInventory() {
-    var cheeseCount = knex.select('cheese').from('inventory').where({ user_id: '1' });
-    console.log("Current cheese count: " + cheeseCount);
     cheeseCount += constructedItems[0].purchaseAmount;
-    console.log("New cheese count: " + cheeseCount);
-    var toyCount = knex.select('toys').from('inventory').where({ user_id: '1' });
-    console.log("Current toy count: " + toyCount);
     toyCount += constructedItems[1].purchaseAmount;
-    console.log("New toy count: " + toyCount);
-    var candyCount = knex.select('candy').from('inventory').where({ user_id: '1' });
-    console.log("Current candy count: " + candyCount);
     candyCount += constructedItems[2].purchaseAmount;
-    console.log("New candy count: " + candyCount);
-    knex('inventory').where({ user_id: '1' }).update({
-        cheese: cheeseCount,
-        toys: toyCount,
-        candy: candyCount
-    })
+    console.log("Player inventory updated: Cheese: " + cheese + ", Toy: " + toy + ", Candy: " + candy);
 }

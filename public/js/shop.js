@@ -1,3 +1,14 @@
+/**
+ * @param {import('knex').Knex} knex
+ */
+
+const knex = require('knex')({
+    client: 'sqlite3',
+    connection: {
+        filename: '/data/app.sqlite'
+    },
+});
+
 const items = [["cheese", 5, 0, "/img/Cheese.png", "Restores Hunger"], ["toy", 5, 0, "/img/Toy.png", "Restores Entertainment"], ["candy", 5, 0, "/img/Candy.png", "Restores Happiness"]]
 const constructedItems = [];
 var totalPurchaseCost = 0;
@@ -107,6 +118,7 @@ function acceptPurchase() {
     purchaseApproved = window.confirm("Are you sure you want to purchase these items for " + totalPurchaseCost + " digipogs?");
     if (purchaseApproved) {
         if (totalPurchaseCost <= fakeDigipogs) {
+            updatePlayerInventory();
             fakeDigipogs -= totalPurchaseCost;
             console.log("Purchase successful! Remaining digipogs: " + fakeDigipogs);
             clearPurchases();
@@ -117,5 +129,21 @@ function acceptPurchase() {
 }
 
 function updatePlayerInventory() {
-    
+    var cheeseCount = knex.select('cheese').from('inventory').where({ user_id: '1' });
+    console.log("Current cheese count: " + cheeseCount);
+    cheeseCount += constructedItems[0].purchaseAmount;
+    console.log("New cheese count: " + cheeseCount);
+    var toyCount = knex.select('toys').from('inventory').where({ user_id: '1' });
+    console.log("Current toy count: " + toyCount);
+    toyCount += constructedItems[1].purchaseAmount;
+    console.log("New toy count: " + toyCount);
+    var candyCount = knex.select('candy').from('inventory').where({ user_id: '1' });
+    console.log("Current candy count: " + candyCount);
+    candyCount += constructedItems[2].purchaseAmount;
+    console.log("New candy count: " + candyCount);
+    knex('inventory').where({ user_id: '1' }).update({
+        cheese: cheeseCount,
+        toys: toyCount,
+        candy: candyCount
+    })
 }

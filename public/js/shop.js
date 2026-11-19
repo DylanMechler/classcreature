@@ -1,14 +1,3 @@
-/**
- * @param {import('knex').Knex} knex
- */
-
-const knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-        filename: '/data/app.sqlite'
-    },
-});
-
 const items = [["cheese", 5, 0, "/img/Cheese.png", "Restores Hunger"], ["toy", 5, 0, "/img/Toy.png", "Restores Entertainment"], ["candy", 5, 0, "/img/Candy.png", "Restores Happiness"]]
 const constructedItems = [];
 var totalPurchaseCost = 0;
